@@ -2,7 +2,6 @@ package io.zenandroid.fptest.dagger;
 
 import dagger.Module;
 import dagger.Provides;
-import io.zenandroid.fptest.service.BBCService;
 
 /**
  * Created by acristescu on 02/07/2017.

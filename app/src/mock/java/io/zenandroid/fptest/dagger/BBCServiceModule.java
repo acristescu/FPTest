@@ -2,7 +2,6 @@ package io.zenandroid.fptest.dagger;
 
 import dagger.Binds;
 import dagger.Module;
-import io.zenandroid.fptest.service.BBCService;
 import io.zenandroid.fptest.service.MockBBCService;
 
 /**

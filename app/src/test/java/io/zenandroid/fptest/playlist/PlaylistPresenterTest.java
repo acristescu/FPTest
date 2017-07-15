@@ -18,7 +18,6 @@ import io.zenandroid.fptest.event.ApiError;
 import io.zenandroid.fptest.model.Playlist;
 import io.zenandroid.fptest.model.PlaylistResponse;
 import io.zenandroid.fptest.model.Song;
-import io.zenandroid.fptest.service.BBCService;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
