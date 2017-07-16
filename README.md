@@ -34,7 +34,12 @@ for more info
 * Two flavors for backend: either connected via the `prod` flavor or local
 (no internet required) via the `mock` flavor. Make sure to check which
 flavor you have selected in Android Studio as you may miss some of the code
-(e.g. [UsersServiceModule.java](blob/master/app/src/prod/java/io/zenandroid/fptest/dagger/UsersServiceModule.java))
+(e.g. [UsersServiceModule.java](app/src/prod/java/io/zenandroid/fptest/dagger/UsersServiceModule.java))
+* API Errors are handled gracefully
+* Runtime permissions (for the camera) are handled via annotations with
+the hotchemi permission dispatcher library (https://github.com/hotchemi/PermissionsDispatcher)
+which is my favourite method of dealing with the problem as it's a lot
+simpler and more expressive than the alternative.
 * mock online API http://demo7231530.mockable.io/users/1
 
 > Please note that I have not used the Hungarian notation, as I consider

@@ -8,12 +8,17 @@ import io.zenandroid.fptest.Application;
 import io.zenandroid.fptest.model.AccountProfile;
 import io.zenandroid.fptest.model.AvatarResponse;
 import io.zenandroid.fptest.model.Session;
+import io.zenandroid.fptest.model.requests.LoginRequest;
+import io.zenandroid.fptest.util.CredentialsManager;
 
 /**
  * Created by acristescu on 16/07/2017.
  */
 
 public class MockUsersService implements UsersService {
+
+	@Inject
+	CredentialsManager credentialsManager;
 
 	@Inject
 	public MockUsersService() {
@@ -25,6 +30,10 @@ public class MockUsersService implements UsersService {
 		final Session session = new Session();
 		session.setUserid("1");
 		session.setToken("MockToken");
+
+		final LoginRequest request = new LoginRequest(email, password);
+		credentialsManager.onSuccessfulLogin(request, session);
+
 		Application.getBus().post(session);
 	}
 
