@@ -69,6 +69,8 @@ public class LoginPresenterTest {
 		presenter.start();
 
 
+		verify(view).setEmail("test@gmail.com");
+		verify(view).setPassword("secret");
 		verify(view).showProgressDialog();
 		verify(service).login("test@gmail.com", "secret");
 

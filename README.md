@@ -1,21 +1,46 @@
-# Greenfield Template
+# FP Test
 
-[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=595a5011982d060001a36b8a&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/595a5011982d060001a36b8a/build/latest?branch=master)
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=596bdf2d1cd4900001c52386&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/596bdf2d1cd4900001c52386/build/latest?branch=master)
 
-This is a template that I use for new projects. It already has some basic
-stuff setup, such as:
-
-* Retrofit + OKHttp
-* Otto
-* Dagger
-* MVP stuff
+Features:
+* [LoginActivity](blob/master/app/src/main/java/io/zenandroid/fptest/login/LoginActivity.java) and [AccountProfileDetailsActivity](blob/master/app/src/main/java/io/zenandroid/fptest/accountdetails/AccountProfileActivity.java)
+implement the two main required screens
+* Automatic login by saving the username and password. Yes, this is not secure
+but this was the only way of ensuring that the password is displayed on
+the profile screen (which is a direct part of the requirements). Alternative
+would have been saving the token and user id
+* Change the avatar by taking photo or choosing from gallery
+* Limit the uploded image size to 1MB by doing a binary search for the
+perfect ratio to scale down. This was a trade-off, discussed more in
+ImageUtils.java
+* Use Gravatar if no avatar is set
+* Avatar is displayed in a circle
+* Apply an inverse filter to image before uploading. This is done asynchronously
+in [ImageProcessingService](blob/master/app/src/main/java/io/zenandroid/fptest/service/ImageProcessingService.java)
+by taking advantage of a few things from Picasso.
+* MVP architecture (instead of VIPER which is very uncommon on Android)
+* __Unit tests__ All presenters are unit tested with pure JUnit local tests
+* __UI Tests__ A navigation test is performed with Espresso.
+* __CI Integration__ Continuous integration is provided via BuddyBuild.
+Note that the whole Unit and UI Tests are run on any commit. Please click
+on the badge above to see the status of the tests on the latest build.
+* Dagger2 injection
 * Butterknife
-* Local JUnit tests
-* UI tests
+* Retrofit + OKHttp + Otto (Eventbus alternative that plays nice with JUnit)
+architecture that allows a clean and concise way to perform asynchronous
+calls to a REST API. See diagram below or my [blog post](http://zenandroid.io/testable-and-robust-architecture-for-android-projects/)
+for more info
+* Two flavors for backend: either connected via the `prod` flavor or local
+(no internet required) via the `mock` flavor. Make sure to check which
+flavor you have selected in Android Studio as you may miss some of the code
+(e.g. [UsersServiceModule.java](blob/master/app/src/prod/java/io/zenandroid/fptest/dagger/UsersServiceModule.java))
+* mock online API http://demo7231530.mockable.io/users/1
 
-For more info, you can check out the [blog post](http://zenandroid.io/testable-and-robust-architecture-for-android-projects/) I wrote about it.
+> Please note that I have not used the Hungarian notation, as I consider
+it unnecessary (and I'm not the only one). However, if the team requires
+it, I am more than happy to oblige.
 
-## Overview
+## Overview of architecture
 
 Here is the diagram of the architecture proposed here:
 

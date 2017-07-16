@@ -1,4 +1,4 @@
-package io.zenandroid.fptest.playlist;
+package io.zenandroid.fptest.smoke;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

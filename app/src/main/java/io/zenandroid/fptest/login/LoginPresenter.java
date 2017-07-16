@@ -58,6 +58,9 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
 		final String email = view.getEmail();
 		final String password = view.getPassword();
 
+		//
+		// Patterns.EMAIL_ADDRESS would be nice here, but it makes the presenter depend on Android
+		//
 		if(!EMAIL_ADDRESS.matcher(email).matches()) {
 			view.showEmailError("Invalid email address");
 			return;

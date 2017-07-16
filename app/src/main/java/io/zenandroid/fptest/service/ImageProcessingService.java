@@ -26,7 +26,11 @@ public class ImageProcessingService implements Target {
 
 	}
 
-	public void applyInverFilter(final String path) {
+	/**
+	 * Apply the Invert Filter to the specified image. Note this is async, expect the result on the bus.
+	 * @param path
+	 */
+	public void applyInvertFilter(final String path) {
 		Picasso
 				.with(Application.getInstance())
 				.load(new File(path))

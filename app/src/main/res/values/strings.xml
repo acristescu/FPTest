@@ -4,4 +4,11 @@
     <string name="api_error_message">Server responded with status: %1$d message: %2$s</string>
     <string name="api_exception_message">Exception while contacting server: %1$s</string>
     <string name="error_server_connection">There was a problem connecting to the server</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose">Choose From Gallery</string>
+    <string name="select_option">Select Option</string>
+    <string name="permission_error">Cannot change avatar without accepting permissions</string>
 </resources>

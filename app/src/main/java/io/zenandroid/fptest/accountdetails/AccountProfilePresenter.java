@@ -60,7 +60,7 @@ public class AccountProfilePresenter extends BasePresenter implements AccountPro
 
 	@Override
 	public void processImage(String path) {
-		imageProcessingService.applyInverFilter(path);
+		imageProcessingService.applyInvertFilter(path);
 		view.showProgressDialog();
 	}
 

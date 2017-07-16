@@ -30,6 +30,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 		Injector.get().inject(this);
 		ButterKnife.bind(this);
 
+		if(getSupportActionBar() != null) {
+			getSupportActionBar().setTitle(getString(R.string.login));
+		}
+
+
 		Utils.setEnabled(loginButton, false);
 
 		presenter = new LoginPresenter(this);

@@ -40,6 +40,7 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 	private AccountProfileContract.Presenter presenter;
 	private static final int PICK_IMAGE_CAMERA = 1;
 	private static final int PICK_IMAGE_GALLERY = 2;
+	private static final String FILE_KEY = "FILE";
 
 	private File photoFile;
 
@@ -50,11 +51,13 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 		setContentView(R.layout.activity_account_profile);
 		Injector.get().inject(this);
 		ButterKnife.bind(this);
-		if(savedInstanceState!= null && savedInstanceState.containsKey("FILE")) {
-			photoFile = new File(savedInstanceState.getString("FILE"));
+		if(savedInstanceState!= null && savedInstanceState.containsKey(FILE_KEY)) {
+			photoFile = new File(savedInstanceState.getString(FILE_KEY, null));
 		}
 
-		getSupportActionBar().hide();
+		if(getSupportActionBar() != null) {
+			getSupportActionBar().hide();
+		}
 		presenter = new AccountProfilePresenter(this);
 		presenter.start();
 	}
@@ -62,27 +65,31 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		//
+		// From experience, the users like to rotate the camera when taking pictures, which
+		// may end up with the activity being recreated. We save the temp file path to guard against this
+		//
 		if(photoFile != null) {
-			outState.putString("FILE", photoFile.getAbsolutePath());
+			outState.putString(FILE_KEY, photoFile.getAbsolutePath());
 		}
 	}
 
 	@OnClick(R.id.avatar)
 	public void onImageClicked() {
-		final String[] options = {"Take Photo", "Choose From Gallery"};
+		final String[] options = {getString(R.string.take_photo), getString(R.string.choose)};
 		android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-		builder.setTitle("Select Option");
+		builder.setTitle(R.string.select_option);
 		builder.setItems(options, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int item) {
-				if (options[item].equals("Take Photo")) {
+				if (options[item].equals(getString(R.string.take_photo))) {
 					dialog.dismiss();
 
 					//
 					// this calls takePhoto() after checking for the required permissions (generated)
 					//
 					AccountProfileActivityPermissionsDispatcher.takePhotoWithCheck(AccountProfileActivity.this);
-				} else if (options[item].equals("Choose From Gallery")) {
+				} else if (options[item].equals(getString(R.string.choose))) {
 					dialog.dismiss();
 
 					//
@@ -145,7 +152,7 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 
 	@OnPermissionDenied({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE})
 	public void onPermissionDenied() {
-		Toast.makeText(this, "Cannot change avatar without accepting permissions", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, R.string.permission_error, Toast.LENGTH_LONG).show();
 	}
 
 	@Override

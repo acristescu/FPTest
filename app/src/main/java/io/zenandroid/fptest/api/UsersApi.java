@@ -17,6 +17,10 @@ import retrofit2.http.Path;
 
 public interface UsersApi {
 
+	//
+	// Note the bearer token is set in UsersServiceModule.provideUsersApi (only visible on the prod
+	// flavor, as mock flavor is local only)!
+	//
 	@POST("sessions/new")
 	Call<Session> login(@Body LoginRequest request);
 
