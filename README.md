@@ -3,7 +3,8 @@
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=596bdf2d1cd4900001c52386&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/596bdf2d1cd4900001c52386/build/latest?branch=master)
 
 Features:
-* [LoginActivity](blob/master/app/src/main/java/io/zenandroid/fptest/login/LoginActivity.java) and [AccountProfileDetailsActivity](blob/master/app/src/main/java/io/zenandroid/fptest/accountdetails/AccountProfileActivity.java)
+* [LoginActivity](app/src/main/java/io/zenandroid/fptest/login/LoginActivity.java) and
+[AccountProfileDetailsActivity](app/src/main/java/io/zenandroid/fptest/accountdetails/AccountProfileActivity.java)
 implement the two main required screens
 * Automatic login by saving the username and password. Yes, this is not secure
 but this was the only way of ensuring that the password is displayed on
@@ -13,10 +14,10 @@ would have been saving the token and user id
 * Limit the uploded image size to 1MB by doing a binary search for the
 perfect ratio to scale down. This was a trade-off, discussed more in
 ImageUtils.java
-* Use Gravatar if no avatar is set
+* Use Gravatar if no avatar is set. [GravatarUtils](app/src/main/java/io/zenandroid/fptest/util/GravatarUtils.java)
 * Avatar is displayed in a circle
 * Apply an inverse filter to image before uploading. This is done asynchronously
-in [ImageProcessingService](blob/master/app/src/main/java/io/zenandroid/fptest/service/ImageProcessingService.java)
+in [ImageProcessingService](app/src/main/java/io/zenandroid/fptest/service/ImageProcessingService.java)
 by taking advantage of a few things from Picasso.
 * MVP architecture (instead of VIPER which is very uncommon on Android)
 * __Unit tests__ All presenters are unit tested with pure JUnit local tests
