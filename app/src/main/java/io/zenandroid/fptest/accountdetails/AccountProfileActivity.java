@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +27,7 @@ import io.zenandroid.fptest.R;
 import io.zenandroid.fptest.base.BaseActivity;
 import io.zenandroid.fptest.dagger.Injector;
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -48,10 +50,21 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 		setContentView(R.layout.activity_account_profile);
 		Injector.get().inject(this);
 		ButterKnife.bind(this);
+		if(savedInstanceState!= null && savedInstanceState.containsKey("FILE")) {
+			photoFile = new File(savedInstanceState.getString("FILE"));
+		}
 
 		getSupportActionBar().hide();
 		presenter = new AccountProfilePresenter(this);
 		presenter.start();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if(photoFile != null) {
+			outState.putString("FILE", photoFile.getAbsolutePath());
+		}
 	}
 
 	@OnClick(R.id.avatar)
@@ -130,6 +143,11 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 		}
 	}
 
+	@OnPermissionDenied({Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE})
+	public void onPermissionDenied() {
+		Toast.makeText(this, "Cannot change avatar without accepting permissions", Toast.LENGTH_LONG).show();
+	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		AccountProfileActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
@@ -146,7 +164,7 @@ public class AccountProfileActivity extends BaseActivity implements AccountProfi
 	}
 
 	@Override
-	public void loadAvatar(Uri url) {
+	public void loadAvatar(String url) {
 		Picasso
 				.with(this)
 				.load(url)

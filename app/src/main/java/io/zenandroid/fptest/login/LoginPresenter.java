@@ -2,6 +2,8 @@ package io.zenandroid.fptest.login;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 import io.zenandroid.fptest.Application;
@@ -18,6 +20,16 @@ import io.zenandroid.fptest.util.CredentialsManager;
 public class LoginPresenter extends BasePresenter implements LoginContract.Presenter {
 
 	private LoginContract.View view;
+	private static final Pattern EMAIL_ADDRESS
+			= Pattern.compile(
+			"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+					"\\@" +
+					"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+					"(" +
+					"\\." +
+					"[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+					")+"
+	);
 
 	@Inject
 	UsersService service;
@@ -34,6 +46,8 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
 	@Override
 	public void start() {
 		if(credentialsManager.getSavedEmail() != null && credentialsManager.getSavedPassword() != null) {
+			view.setEmail(credentialsManager.getSavedEmail());
+			view.setPassword(credentialsManager.getSavedPassword());
 			view.showProgressDialog();
 			service.login(credentialsManager.getSavedEmail(), credentialsManager.getSavedPassword());
 		}
@@ -43,6 +57,11 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
 	public void loginClicked() {
 		final String email = view.getEmail();
 		final String password = view.getPassword();
+
+		if(!EMAIL_ADDRESS.matcher(email).matches()) {
+			view.showEmailError("Invalid email address");
+			return;
+		}
 
 		view.showProgressDialog();
 

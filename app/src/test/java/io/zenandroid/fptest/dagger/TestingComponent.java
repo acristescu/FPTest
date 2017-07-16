@@ -5,6 +5,6 @@ import dagger.Component;
 /**
  * Created by acristescu on 02/07/2017.
  */
-@Component(modules={AppModule.class, MockBBCServiceModule.class})
+@Component(modules={AppModule.class, MockUsersServiceModule.class})
 public interface TestingComponent extends AppComponent {
 }

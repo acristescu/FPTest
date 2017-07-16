@@ -11,6 +11,12 @@ public interface LoginContract {
 		String getPassword();
 
 		void navigateToAccountPage();
+
+		void showEmailError(String error);
+
+		void setEmail(String email);
+
+		void setPassword(String password);
 	}
 
 	interface Presenter extends io.zenandroid.fptest.base.Presenter {

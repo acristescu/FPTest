@@ -2,9 +2,6 @@ package io.zenandroid.fptest.service;
 
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
-import android.util.Base64;
-
-import java.io.ByteArrayOutputStream;
 
 import javax.inject.Inject;
 
@@ -16,6 +13,7 @@ import io.zenandroid.fptest.model.Session;
 import io.zenandroid.fptest.model.requests.AvatarRequest;
 import io.zenandroid.fptest.model.requests.LoginRequest;
 import io.zenandroid.fptest.util.CredentialsManager;
+import io.zenandroid.fptest.util.ImageUtils;
 
 /**
  * Created by acristescu on 14/07/2017.
@@ -51,14 +49,14 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public void sendAvatar(Bitmap avatar) {
-		AvatarRequest request = new AvatarRequest();
-
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		avatar.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-		byte[] byteArray = stream.toByteArray();
-
-		request.setAvatar(Base64.encodeToString(byteArray, Base64.DEFAULT));
-		api.setAvatar(credentialsManager.getUserId(), request).enqueue(new ApiCallback<>(AvatarResponse.class));
+	public void sendAvatar(final Bitmap avatar) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final AvatarRequest request = new AvatarRequest();
+				request.setAvatar(ImageUtils.base64EncodeImageWithMaxSize(avatar));
+				api.setAvatar(credentialsManager.getUserId(), request).enqueue(new ApiCallback<>(AvatarResponse.class));
+			}
+		}).start();
 	}
 }

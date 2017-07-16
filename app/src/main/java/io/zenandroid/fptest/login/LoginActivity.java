@@ -8,10 +8,12 @@ import android.widget.EditText;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import io.zenandroid.fptest.R;
 import io.zenandroid.fptest.accountdetails.AccountProfileActivity;
 import io.zenandroid.fptest.base.BaseActivity;
 import io.zenandroid.fptest.dagger.Injector;
+import io.zenandroid.fptest.util.Utils;
 
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
@@ -28,6 +30,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 		Injector.get().inject(this);
 		ButterKnife.bind(this);
 
+		Utils.setEnabled(loginButton, false);
+
 		presenter = new LoginPresenter(this);
 	}
 
@@ -40,6 +44,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 	protected void onStart() {
 		super.onStart();
 		presenter.start();
+	}
+
+	@OnTextChanged({R.id.input_email, R.id.input_password})
+	public void onTextChanged() {
+		Utils.setEnabled(loginButton,
+				emailText.getText().length() > 0 &&
+				passwordText.getText().length() > 0
+		);
 	}
 
 	@Override
@@ -56,6 +68,22 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 	public void navigateToAccountPage() {
 		finish();
 		startActivity(new Intent(this, AccountProfileActivity.class));
+	}
+
+	@Override
+	public void showEmailError(String error) {
+		emailText.setError(error);
+		emailText.requestFocus();
+	}
+
+	@Override
+	public void setEmail(String email) {
+		emailText.setText(email);
+	}
+
+	@Override
+	public void setPassword(String password) {
+		passwordText.setText(password);
 	}
 
 }
